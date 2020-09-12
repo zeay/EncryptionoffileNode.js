@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en" class="fullscreen-bg">
+
+<head>
+	<title>Admin</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<!-- VENDOR CSS -->
+	<link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="assets/vendor/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="assets/vendor/linearicons/style.css">
+	<!-- MAIN CSS -->
+	<link rel="stylesheet" href="assets/css/main.css">
+	<!-- GOOGLE FONTS -->
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
+	<!-- ICONS -->
+</head>
+
+<body>
+	<!-- WRAPPER -->
+	<div id="wrapper">
+		<div class="vertical-align-wrap">
+			<div class="vertical-align-middle">
+				<div class="auth-box lockscreen clearfix">
+					<div class="content">
+						<h1 class="sr-only">Theillfree</h1>
+						<div class="user text-center">
+<!--							<img src="assets/img/logo-dark.png" class="img-circle" alt="Avatar" style="width:100px;height:100px;border-radius:50px">-->
+							<h2 class="name">Admin</h2>
+						</div>
+						<form>
+							<div class="input-group">
+									<input type="password" class="form-control" id="pass" placeholder="Enter your password ...">
+									<span class="input-group-btn"><button class="btn btn-primary" id="unlock"><i class="fa fa-arrow-right"></i></button></span>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- END WRAPPER -->
+	<script>
+		let token = "";
+		var xhr;
+		let pass = document.getElementById("pass");
+		let loginBtn = document.getElementById("unlock");
+		var serverRequest = function(url, data, callback){
+			xhr = new XMLHttpRequest();
+			xhr.open('POST', url);
+			xhr.setRequestHeader('Content-Type', 'application/json');
+			xhr.setRequestHeader('Authorization', 'Bearer '+token);
+			xhr.onload = callback;
+			var stringifyData = JSON.stringify(data);
+			xhr.send(stringifyData);
+		};
+		loginBtn.addEventListener('click', (e)=>{
+			e.preventDefault();
+			let passData = {
+				password: pass.value
+			}
+			if(passData.password === ""){
+				alert("Enter password");
+				return false;
+			}
+			serverRequest('http://localhost:3000/login', passData, function() {
+				if(xhr.status === 200){
+					let parseResponse = JSON.parse(this.response);
+					if(parseResponse.token){
+						token = parseResponse.token;
+						console.log("JWT Token please remove this console in production", token);
+						serverRequest("http://localhost:3000/admin", {message: "sendFile"}, function(){ 
+							document.body.innerHTML = this.response;
+									let createScript = document.createElement("script");
+									createScript.src = "js/upload.js";
+									document.body.appendChild(createScript);
+							
+						});
+
+					}else{
+						console.log(parseResponse);
+					}
+				}
+			});
+		})
+	</script>
+
+</html>
