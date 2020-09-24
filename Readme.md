@@ -5,4 +5,10 @@ To start the server Just type following command
 Server get started to PORT 3000 in local Enviroment
   - http://localhost:3000  Home Directory
 
-File Encryption, Downloading, Uploading, User Info like IP and Geo Location With JSON WEB TOKEN Authorization (JWT).
+All Users
+ -/users
+ -Elese follow GUI
+
+Requirement and Database
+ -Node.js
+ -Use Plain JSON as Database

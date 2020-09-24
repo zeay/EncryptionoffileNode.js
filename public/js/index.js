@@ -1,70 +1,55 @@
-let products = document.getElementById("putProducts");
-let lat;
-let long;
-let reqInterval;
-
-//putting global user item
-let puttingProducts = function(data){
-    let elem = `<p><a href="/download?file=${data}" target="_blank">${data}</a></p>`;
-    console.log(products);
-    products.innerHTML += elem;
+let domElement = { 
+  email: document.getElementById("email"),
+  password: document.getElementById("password"),
+  phone: document.getElementById("phone"),
+  btn: document.getElementById("submit")
 }
 
-//geeting user location
-function getLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(showPosition, showError);
-    } else { 
-      lat = "none",
-      long = "none";
-      reqInterval = setInterval(processReq, 1000);
-      console.log("Geolocation is not supported by this browser.");
+let userData = {};
+
+function makeSignUp(){ 
+  serverRequest("/signup", "post", userData, function () { 
+    let res = JSON.parse(this.response);
+    if(res.id && res.token){ 
+      localStorage.setItem("token", res.token);
+      localStorage.setItem("id", res.id);
+      location.href = "/admin.html";
+    }else{ 
+      alert(res.message);
     }
-  }
-  
-  //registering user cords to server
-  function showPosition(position) {
-    lat=  position.coords.latitude;
-    long= position.coords.longitude;
-    //console.log(lat, long);
-    reqInterval = setInterval(processReq, 1000);
-  }
-  
-  //handeling user errors
-  function showError(error) {
-    lat = "none";
-    long = "none";
-    reqInterval = setInterval(processReq, 1000);
-    switch(error.code) {
-      case error.PERMISSION_DENIED:
-        console.log("User denied the request for Geolocation.");
-        break;
-      case error.POSITION_UNAVAILABLE:
-        console.log("Location information is unavailable.");
-        break;
-      case error.TIMEOUT:
-        console.log("The request to get user location timed out.");
-        break;
-      case error.UNKNOWN_ERROR:
-        console.log("An unknown error occurred.");
-        break;
-    }
+  })
+}
+
+domElement.btn.addEventListener('click', (e) => { 
+  e.preventDefault();
+  let isEmail = validateEmail(domElement.email.value);
+  let isPhone = validatePhone(domElement.phone.value);
+  let isPassWord = checkPassword(domElement.password.value);
+  if(!isEmail || !isPhone || !isPassWord){
+    alert("Email, Password or Phone is not valid");
+    return false;
   }
 
-//sending data to server
-  function processReq(){ 
-      if(!onRequest){
-        onRequest = true;
-        createXmlhttp("GET", `http://localhost:3000/userInfo?lat=${lat}&long=${long}`, function(){ 
-            if(xhttp.status === 200 && xhttp.readyState === 4){
-              let message = JSON.parse(this.response);
-              console.log(message);
-            }
-        });
-      }
-      onRequest = false;
-      clearInterval(reqInterval);
-  }
+  userData.email = domElement.email.value;
+  userData.password = domElement.password.value;
+  userData.phone = domElement.phone.value;
+  console.log(userData);
+  makeSignUp();
+});
 
-//intialising geoLocation
-  getLocation();
+
+function validateEmail(email) {
+  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(String(email).toLowerCase());
+}
+
+function validatePhone(phone) {
+  const regex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+  return regex.test(phone);
+}
+
+function checkPassword(str){
+    var re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+    return re.test(str);
+}
+

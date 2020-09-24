@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const upload = require('express-fileupload');
 
-const productRoutes = require("./routes/product");
+// const productRoutes = require("./routes/product");
 const adminRoutes = require("./routes/admin");
 const app = express();
 
@@ -17,7 +17,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(upload());
-app.use(productRoutes);
+// app.use(productRoutes);
 app.use(adminRoutes);
 
 //404 not fount handler

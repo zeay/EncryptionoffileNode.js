@@ -34,7 +34,7 @@
     <header>
   <!-- Fixed navbar -->
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <a class="navbar-brand" href="#">Encryption of file</a>
+    <a class="navbar-brand" href="#">R logical</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -43,17 +43,7 @@
         <li class="nav-item active">
           <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="admin.html">Admin</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-        </li>
       </ul>
-      <form class="form-inline mt-2 mt-md-0" id="searchBar" style="display: none;">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
     </div>
   </nav>
 </header>
@@ -61,14 +51,31 @@
 <!-- Begin page content -->
 <main role="main" class="flex-shrink-0">
   <div class="container">
-    <h1 class="mt-5">Products</h1>
-    <div id="putProducts"></div>
+    <h1 class="mt-5">SignUp</h1>
+    <div id="signUp">
+      <br />
+      <br />
+      <form>
+        <label for="email">Email</label>
+        <input type="text" id="email" name="email">
+        <hr />
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password">
+        <span>Password must contains Lower and Upper letter with Special Character</span>
+        <hr />
+        <label for="phone">Phone Number</label>
+        <input type="number" id="phone" name="phone">
+        <span>Phone Number Must be 10 digit</span>
+        <hr />
+        <button id="submit">Submit</button>
+      </form>
+    </div>
   </div>
 </main>
 
 <footer class="footer mt-auto py-3">
   <div class="container">
-    <span class="text-muted">Encryption of file</span>
+    <span class="text-muted">R Logical Project</span>
   </div>
 </footer>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
